@@ -14,12 +14,14 @@
     NSInteger _mineNums;//地雷的个数
     NSInteger _row;//行数
     NSInteger _column;//列数
+    NSInteger _cycleNums;
 }
 
 @property (nonatomic, strong) UIView *bgView;//
 
 @property (nonatomic, strong) NSMutableArray *mineMapArray;//地雷地图数组
 @property (nonatomic, strong) NSMutableArray *minesArray;//所有地雷位置
+@property (nonatomic, strong) NSMutableArray *turnoverArray;//可翻转单元的位置数组
 @end
 
 @implementation ViewController
@@ -48,9 +50,15 @@
     }
     return _minesArray;
 }
+- (NSMutableArray *)turnoverArray {
+    if (!_turnoverArray) {
+        _turnoverArray = [NSMutableArray array];
+    }
+    return _turnoverArray;
+}
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _mineNums = 15;
+    _mineNums = 10;
     _row = 10;
     _column = 10;
 }
@@ -138,6 +146,7 @@
     
     for (int i = 0; i < _row * _column; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        button.tag = i;
         //设置frame
         CGRect screenBounds = [UIScreen mainScreen].bounds;
         CGFloat buttonW = (screenBounds.size.width - kBorderX * 2 - (_column - 1) * kGap) / _column;
@@ -156,8 +165,24 @@
 }
 
 - (void)cellButtonSelect:(UIButton *)button {
+    _cycleNums = 0;
+    button.selected = YES;
+    button.userInteractionEnabled = NO;
+    NSInteger mineNum = [self.mineMapArray[button.tag] integerValue];
     
+    if (mineNum == 9) {//地雷，游戏结束
+        NSLog(@"此为地雷，游戏结束");
+        return;
+    }
+    if (mineNum > 0 && mineNum < 9) {//数字单元
+        
+        NSLog(@"数字单元，翻过来");
+        return;
+    }
     
+    //找到空白单元周围所有可翻转的单元
+    [self.turnoverArray removeAllObjects];
+    [self findAllTurnover:button.tag];
     
     
 }
@@ -170,6 +195,66 @@
     [button setBackgroundImage:[UIImage imageNamed:@"flag_white_bg"] forState:UIControlStateNormal];
     
 }
+- (void)findAllTurnover:(NSInteger)location {
+    
+    if ([self.mineMapArray[location] integerValue] != 0) {//如果当前单元不是空白单元则，回到上一层继续寻找下一个位置
+        [self.turnoverArray addObject:@(location)];
+        return;
+    }
+    
+    NSInteger aroundLocation;
+    aroundLocation = location - _column - 1;//左上
+    if (location / _column != 0 && location % _column != 0) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location - _column;//上
+    if (location / _column != 0) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location - _column + 1;//右上
+    if (location / _column && location % _column != _column - 1) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location + 1;//右
+    if (location % _column != _column - 1) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location + _column + 1;//右下
+    if (location % _column != _column - 1 && location / _column != _column - 1) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location + _column;//下
+    if (location / _column != _column - 1) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location + _column - 1;//左下
+    if (location / _column != _column - 1 && location % _column != 0) {
+        [self addTurnover:aroundLocation];
+    }
+    
+    aroundLocation = location - 1;//左
+    if (location % _column != 0) {
+        [self addTurnover:aroundLocation];
+    }
+    
+}
+- (void)addTurnover:(NSInteger)location {
+    if ([self.turnoverArray containsObject:self.mineMapArray[location]]) {//如果已经包含这个单元return
+        return;
+    }
+    _cycleNums++;
+    NSLog(@"turnover - %ld", (long)location);
+    [self.turnoverArray addObject:@(location)];
+    
+    [self findAllTurnover:location];
+}
+
 - (IBAction)btnClick:(id)sender {
     self.mineMapArray = nil;
     self.minesArray = nil;
