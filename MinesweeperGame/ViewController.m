@@ -149,18 +149,22 @@
         [button setBackgroundImage:[UIImage imageNamed:[NSString stringWithFormat:@"selected_%@", self.mineMapArray[i]]] forState:UIControlStateSelected];
         [button setBackgroundImage:[UIImage imageNamed:@"selected_bg"] forState:UIControlStateNormal];
         [button addTarget:self action:@selector(cellButtonSelect:) forControlEvents:UIControlEventTouchUpInside];
-        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPress:)];
+        UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(markMine:)];
         [button addGestureRecognizer:longPress];
         [self.bgView addSubview:button];
     }
 }
 
 - (void)cellButtonSelect:(UIButton *)button {
-    NSLog(@"cellClick");
-    button.selected = YES;
+    
+    
+    
     
 }
-- (void)longPress:(UILongPressGestureRecognizer *)longPress {
+/**
+ *  长按标记地雷
+ */
+- (void)markMine:(UILongPressGestureRecognizer *)longPress {
     NSLog(@"longPress");
     UIButton *button = (UIButton *)longPress.view;
     [button setBackgroundImage:[UIImage imageNamed:@"flag_white_bg"] forState:UIControlStateNormal];
@@ -170,6 +174,9 @@
     self.mineMapArray = nil;
     self.minesArray = nil;
     [self setupMines];
+    
+    
+    NSLog(@"%@",self.mineMapArray);
     [self setupMapView];
     
 }
