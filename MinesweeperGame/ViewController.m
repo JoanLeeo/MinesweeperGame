@@ -8,13 +8,14 @@
 
 #import "ViewController.h"
 #define kBorderX 5
-#define kBorderY 100
+#define kBorderY 80
 #define kGap 2
+#define kTag 100
 @interface ViewController () {
     NSInteger _mineNums;//地雷的个数
     NSInteger _row;//行数
     NSInteger _column;//列数
-    NSInteger _cycleNums;
+    NSInteger _longPressStation;
 }
 
 @property (nonatomic, strong) UIView *bgView;//
@@ -61,6 +62,7 @@
     _mineNums = 10;
     _row = 10;
     _column = 10;
+    [self restartBtnClick:nil];
 }
 /**
  *  初始化地雷
@@ -146,7 +148,7 @@
     
     for (int i = 0; i < _row * _column; i++) {
         UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
-        button.tag = i;
+        button.tag = kTag + i;
         //设置frame
         CGRect screenBounds = [UIScreen mainScreen].bounds;
         CGFloat buttonW = (screenBounds.size.width - kBorderX * 2 - (_column - 1) * kGap) / _column;
@@ -165,10 +167,9 @@
 }
 
 - (void)cellButtonSelect:(UIButton *)button {
-    _cycleNums = 0;
     button.selected = YES;
     button.userInteractionEnabled = NO;
-    NSInteger mineNum = [self.mineMapArray[button.tag] integerValue];
+    NSInteger mineNum = [self.mineMapArray[button.tag - kTag] integerValue];
     
     if (mineNum == 9) {//地雷，游戏结束
         NSLog(@"此为地雷，游戏结束");
@@ -182,23 +183,42 @@
     
     //找到空白单元周围所有可翻转的单元
     [self.turnoverArray removeAllObjects];
-    [self findAllTurnover:button.tag];
+    [self findAllTurnover:button.tag - kTag];
     
-    
+    //翻转所有可翻转单元
+    for (NSNumber *obj in self.turnoverArray) {
+        UIButton *button = (UIButton *)[self.bgView viewWithTag:[obj integerValue] + kTag];
+        button.selected = YES;
+        button.userInteractionEnabled = NO;
+    }
 }
 /**
  *  长按标记地雷
  */
 - (void)markMine:(UILongPressGestureRecognizer *)longPress {
-    NSLog(@"longPress");
-    UIButton *button = (UIButton *)longPress.view;
-    [button setBackgroundImage:[UIImage imageNamed:@"flag_white_bg"] forState:UIControlStateNormal];
     
+    UIButton *button = (UIButton *)longPress.view;
+    if(longPress.state == UIGestureRecognizerStateBegan) {
+        if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"selected_bg"]]) {
+            [button setBackgroundImage:[UIImage imageNamed:@"flag_blue_bg"] forState:UIControlStateNormal];
+            return;
+        }
+        if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"flag_blue_bg"]]) {
+            [button setBackgroundImage:[UIImage imageNamed:@"question_mark"] forState:UIControlStateNormal];
+            return;
+        }
+        if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"question_mark"]]) {
+            [button setBackgroundImage:[UIImage imageNamed:@"selected_bg"] forState:UIControlStateNormal];
+            return;
+        }
+    }
 }
 - (void)findAllTurnover:(NSInteger)location {
     
     if ([self.mineMapArray[location] integerValue] != 0) {//如果当前单元不是空白单元则，回到上一层继续寻找下一个位置
-        [self.turnoverArray addObject:@(location)];
+        if (![self.turnoverArray containsObject:@(location)]) {
+            [self.turnoverArray addObject:@(location)];
+        }
         return;
     }
     
@@ -245,25 +265,27 @@
     
 }
 - (void)addTurnover:(NSInteger)location {
-    if ([self.turnoverArray containsObject:self.mineMapArray[location]]) {//如果已经包含这个单元return
+    
+    if ([self.turnoverArray containsObject:@(location)]) {//如果已经包含这个单元return
         return;
     }
-    _cycleNums++;
-    NSLog(@"turnover - %ld", (long)location);
     [self.turnoverArray addObject:@(location)];
-    
     [self findAllTurnover:location];
 }
 
-- (IBAction)btnClick:(id)sender {
+- (IBAction)restartBtnClick:(id)sender {
+    self.bgView.userInteractionEnabled = NO;
     self.mineMapArray = nil;
     self.minesArray = nil;
+    self.turnoverArray = nil;
     [self setupMines];
+    [self.bgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
-    
-    NSLog(@"%@",self.mineMapArray);
     [self setupMapView];
     
+}
+- (IBAction)startBtnClick:(id)sender {
+    self.bgView.userInteractionEnabled = YES;
 }
 
 @end
