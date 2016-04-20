@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="9531" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="10116" systemVersion="15E65" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" initialViewController="BYZ-38-t0r">
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9529"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="10085"/>
         <capability name="Constraints to layout margins" minToolsVersion="6.0"/>
     </dependencies>
     <scenes>
@@ -67,7 +67,7 @@
                                             <constraint firstAttribute="width" constant="40" id="pcV-xD-3OV"/>
                                         </constraints>
                                     </imageView>
-                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="99" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRk-ti-uFL">
+                                    <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRk-ti-uFL">
                                         <rect key="frame" x="379" y="29" width="27" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="27" id="ALB-57-7Xm"/>
@@ -79,7 +79,6 @@
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
-                                    <constraint firstItem="6jP-8H-8W3" firstAttribute="top" secondItem="Fqx-OC-vi9" secondAttribute="bottom" constant="-25" id="038-8x-onf"/>
                                     <constraint firstItem="gwM-pN-cOC" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="446-Db-g1q"/>
                                     <constraint firstAttribute="trailing" secondItem="gwM-pN-cOC" secondAttribute="trailing" constant="8" id="Dgz-nc-HHe"/>
                                     <constraint firstItem="Fqx-OC-vi9" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="Lc6-zA-VUv"/>
@@ -94,11 +93,6 @@
                                     <constraint firstItem="VRk-ti-uFL" firstAttribute="bottom" secondItem="gwM-pN-cOC" secondAttribute="bottom" constant="-3" id="wNR-Iu-d7b"/>
                                     <constraint firstItem="6n3-2Z-1UQ" firstAttribute="leading" secondItem="nmJ-c0-x5j" secondAttribute="leading" constant="8" id="xCe-oe-Vzg"/>
                                 </constraints>
-                                <variation key="default">
-                                    <mask key="constraints">
-                                        <exclude reference="038-8x-onf"/>
-                                    </mask>
-                                </variation>
                             </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
@@ -109,6 +103,12 @@
                         </constraints>
                     </view>
                     <simulatedScreenMetrics key="simulatedDestinationMetrics" type="retina55"/>
+                    <connections>
+                        <outlet property="leftMarkMineLb" destination="VRk-ti-uFL" id="me4-u6-6Kn"/>
+                        <outlet property="restartBtn" destination="8uH-Cr-R6o" id="1yb-I2-j2j"/>
+                        <outlet property="startBtn" destination="6jP-8H-8W3" id="HLy-Rx-yWC"/>
+                        <outlet property="timeLb" destination="Fqx-OC-vi9" id="Amg-nc-O1i"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>

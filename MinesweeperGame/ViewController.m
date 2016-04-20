@@ -13,12 +13,19 @@
 #define kTag 100
 @interface ViewController () {
     NSInteger _mineNums;//地雷的个数
+    NSInteger _leftMarkMineNums;//剩余标记地雷的个数
+    NSInteger _rightMarkMineNums;//标记正确的地雷个数
     NSInteger _row;//行数
     NSInteger _column;//列数
     NSInteger _longPressStation;
+    NSInteger _seconds;
 }
-
+@property (nonatomic, strong) NSTimer *timer;
 @property (nonatomic, strong) UIView *bgView;//
+@property (weak, nonatomic) IBOutlet UILabel *timeLb;
+@property (weak, nonatomic) IBOutlet UILabel *leftMarkMineLb;
+@property (weak, nonatomic) IBOutlet UIButton *startBtn;
+@property (weak, nonatomic) IBOutlet UIButton *restartBtn;
 
 @property (nonatomic, strong) NSMutableArray *mineMapArray;//地雷地图数组
 @property (nonatomic, strong) NSMutableArray *minesArray;//所有地雷位置
@@ -59,7 +66,9 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _mineNums = 10;
+    _mineNums = 2;
+    _leftMarkMineNums = _mineNums;
+    _rightMarkMineNums = 0;
     _row = 10;
     _column = 10;
     [self restartBtnClick:nil];
@@ -167,12 +176,36 @@
 }
 
 - (void)cellButtonSelect:(UIButton *)button {
+    if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"flag_blue_bg"]]) {
+        self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (++_leftMarkMineNums)];
+    }
     button.selected = YES;
     button.userInteractionEnabled = NO;
     NSInteger mineNum = [self.mineMapArray[button.tag - kTag] integerValue];
     
+    
     if (mineNum == 9) {//地雷，游戏结束
-        NSLog(@"此为地雷，游戏结束");
+        [self.timer invalidate];//计时结束
+        //翻转所有单元
+        for (UIButton *button  in self.bgView.subviews) {
+            button.selected = YES;
+            button.userInteractionEnabled = NO;
+        }
+        _leftMarkMineNums = _mineNums;
+        self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (long)_leftMarkMineNums];
+        //弹窗游戏结束
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"游戏结束" message:@"你咋恁不小心呢!!" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *sure = [UIAlertAction actionWithTitle:@"再来一局" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            [self restartBtnClick:nil];
+        }];
+        UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alert addAction:sure];
+        [alert addAction:cancel];
+        [self presentViewController:alert animated:YES completion:nil];
+        
+        
         return;
     }
     if (mineNum > 0 && mineNum < 9) {//数字单元
@@ -187,7 +220,11 @@
     
     //翻转所有可翻转单元
     for (NSNumber *obj in self.turnoverArray) {
+        
         UIButton *button = (UIButton *)[self.bgView viewWithTag:[obj integerValue] + kTag];
+        if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"flag_blue_bg"]]) {
+            self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (++_leftMarkMineNums)];
+        }
         button.selected = YES;
         button.userInteractionEnabled = NO;
     }
@@ -199,14 +236,52 @@
     
     UIButton *button = (UIButton *)longPress.view;
     if(longPress.state == UIGestureRecognizerStateBegan) {
+        //当前单元为没有标记
         if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"selected_bg"]]) {
-            [button setBackgroundImage:[UIImage imageNamed:@"flag_blue_bg"] forState:UIControlStateNormal];
+            if (_leftMarkMineNums > 0) {//剩余旗帜>0,才能标记旗帜
+                [button setBackgroundImage:[UIImage imageNamed:@"flag_blue_bg"] forState:UIControlStateNormal];
+                self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (--_leftMarkMineNums)];
+                
+                if ([self.mineMapArray[button.tag - kTag] isEqualToNumber:@(9)]) {//如果标记的位置是地雷则标对+1
+                    _rightMarkMineNums++;
+                }
+                if (_rightMarkMineNums == _mineNums) {//判断地雷是否已经标记完全，扫雷成功
+                    [self.timer invalidate];//结束计时
+                    //翻转所有空白单元 和 数字单元
+                    for (UIButton *button  in self.bgView.subviews) {
+                        if (![self.mineMapArray[button.tag - kTag] isEqualToNumber:@(9)]) {
+                            button.selected = YES;
+                            button.userInteractionEnabled = NO;
+                        }
+                    }
+                    //弹窗 - 游戏赢了
+                    NSString *message = [NSString stringWithFormat:@"你咋恁厉害!!\n用时%02ld:%02ld", _seconds / 60, _seconds % 60];
+                    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"你赢了" message:message preferredStyle:UIAlertControllerStyleAlert];
+                    
+                    UIAlertAction *sure = [UIAlertAction actionWithTitle:@"再来一局" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self restartBtnClick:nil];
+                    }];
+                    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    }];
+                    [alert addAction:sure];
+                    [alert addAction:cancel];
+                    [self presentViewController:alert animated:YES completion:nil];
+                }
+            } else {
+                [button setBackgroundImage:[UIImage imageNamed:@"question_mark"] forState:UIControlStateNormal];
+            }
             return;
         }
+        //当前单元标记为地雷
         if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"flag_blue_bg"]]) {
+            self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (++_leftMarkMineNums)];
             [button setBackgroundImage:[UIImage imageNamed:@"question_mark"] forState:UIControlStateNormal];
+            if ([self.mineMapArray[button.tag - kTag] isEqualToNumber:@(9)]) {
+                _rightMarkMineNums--;
+            }
             return;
         }
+        //当前单元标记为问号
         if ([button.currentBackgroundImage isEqual:[UIImage imageNamed:@"question_mark"]]) {
             [button setBackgroundImage:[UIImage imageNamed:@"selected_bg"] forState:UIControlStateNormal];
             return;
@@ -274,18 +349,40 @@
 }
 
 - (IBAction)restartBtnClick:(id)sender {
+    [self.timer invalidate];//结束计时
+    _restartBtn.enabled = NO;
+    _startBtn.enabled = YES;
+    
+    
+    _leftMarkMineNums = _mineNums;
+    _rightMarkMineNums = 0;
+    
     self.bgView.userInteractionEnabled = NO;
     self.mineMapArray = nil;
     self.minesArray = nil;
     self.turnoverArray = nil;
+    self.leftMarkMineLb.text = [NSString stringWithFormat:@"%ld", (long)_leftMarkMineNums];
+    self.timeLb.text = @"00:00";
     [self setupMines];
     [self.bgView.subviews makeObjectsPerformSelector:@selector(removeFromSuperview)];
     
     [self setupMapView];
     
 }
-- (IBAction)startBtnClick:(id)sender {
+- (IBAction)startBtnClick:(UIButton *)button {
+    _seconds = 0;
+    self.timer = [NSTimer scheduledTimerWithTimeInterval:1.0f target:self selector:@selector(clockTimer) userInfo:nil repeats:YES];
     self.bgView.userInteractionEnabled = YES;
+    _startBtn.enabled = NO;
+    _restartBtn.enabled = YES;
+    
 }
-
+- (void)clockTimer {
+    _seconds++;
+    self.timeLb.text = [NSString stringWithFormat:@"%02ld:%02ld", _seconds / 60, _seconds % 60];
+}
+- (void)dealloc {
+    
+    [self.timer invalidate];
+}
 @end
