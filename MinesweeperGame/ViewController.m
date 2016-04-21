@@ -7,6 +7,7 @@
 //
 
 #import "ViewController.h"
+#import "LevelModel.h"
 #define kBorderX 5
 #define kBorderY 80
 #define kGap 2
@@ -30,6 +31,7 @@
 @property (nonatomic, strong) NSMutableArray *mineMapArray;//地雷地图数组
 @property (nonatomic, strong) NSMutableArray *minesArray;//所有地雷位置
 @property (nonatomic, strong) NSMutableArray *turnoverArray;//可翻转单元的位置数组
+@property (nonatomic, strong) NSArray *levelArray;
 @end
 
 @implementation ViewController
@@ -45,7 +47,7 @@
 }
 - (UIView *)bgView {
     if (!_bgView) {
-        _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, kBorderY, CGRectGetWidth(self.view.bounds), CGRectGetWidth(self.view.bounds))];
+        _bgView = [[UIView alloc] initWithFrame:CGRectMake(0, kBorderY, CGRectGetWidth(self.view.bounds), CGRectGetHeight(self.view.bounds) - kBorderY)];
         _bgView.backgroundColor = [UIColor grayColor];
         [self.view addSubview:_bgView];
         
@@ -63,6 +65,21 @@
         _turnoverArray = [NSMutableArray array];
     }
     return _turnoverArray;
+}
+- (NSArray *)levelArray {
+    if (!_levelArray) {
+        LevelModel *level0 = [LevelModel levelModelWithTitle:@"6 x 6  💣5" row:6 column:6 mineNums:5];
+        LevelModel *level1 = [LevelModel levelModelWithTitle:@"10 x 10  💣15" row:10 column:10 mineNums:15];
+        LevelModel *level2 = [LevelModel levelModelWithTitle:@"15 x 10  💣25" row:15 column:10 mineNums:25];
+        LevelModel *level3 = [LevelModel levelModelWithTitle:@"15 x 15  💣35" row:15 column:15 mineNums:35];
+        LevelModel *level4 = [LevelModel levelModelWithTitle:@"15 x 15  💣40" row:15 column:15 mineNums:40];
+        LevelModel *level5 = [LevelModel levelModelWithTitle:@"20 x 15  💣50" row:20 column:15 mineNums:50];
+        LevelModel *level6 = [LevelModel levelModelWithTitle:@"20 x 20  💣60" row:20 column:20 mineNums:60];
+        LevelModel *level7 = [LevelModel levelModelWithTitle:@"25 x 20  💣65" row:25 column:20 mineNums:65];
+        LevelModel *level8 = [LevelModel levelModelWithTitle:@"30 x 20  💣70" row:30 column:20 mineNums:70];
+        _levelArray = [NSArray arrayWithObjects:level0, level1, level2, level3, level4, level5, level6, level7, level8, nil];
+    }
+    return _levelArray;
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -101,13 +118,9 @@
         
         //location / _column != 0 判断是否在第一行
         //location % _column != 0 判断是否在第一列
-        //location / _column != _column - 1 判断是否在最后一行
+        //location / _column != _row - 1 判断是否在最后一行
         //location % _column != _column - 1 判断是否在最后一列
         //
-        aroundLocation = location - _column - 1;//左上
-        if (location / _column != 0 && location % _column != 0) {
-            [self locationPlus:aroundLocation];
-        }
         
         aroundLocation = location - _column;//上
         if (location / _column != 0) {
@@ -125,17 +138,17 @@
         }
         
         aroundLocation = location + _column + 1;//右下
-        if (location % _column != _column - 1 && location / _column != _column - 1) {
+        if (location % _column != _column - 1 && location / _column != _row - 1) {
             [self locationPlus:aroundLocation];
         }
         
         aroundLocation = location + _column;//下
-        if (location / _column != _column - 1) {
+        if (location / _column != _row - 1) {
             [self locationPlus:aroundLocation];
         }
         
         aroundLocation = location + _column - 1;//左下
-        if (location / _column != _column - 1 && location % _column != 0) {
+        if (location / _column != _row - 1 && location % _column != 0) {
             [self locationPlus:aroundLocation];
         }
         
@@ -144,6 +157,10 @@
             [self locationPlus:aroundLocation];
         }
         
+        aroundLocation = location - _column - 1;//左上
+        if (location / _column != 0 && location % _column != 0) {
+            [self locationPlus:aroundLocation];
+        }
     }
 }
 - (void)locationPlus:(NSInteger)location {
@@ -153,6 +170,9 @@
     }
     [self.mineMapArray replaceObjectAtIndex:location withObject:@(cellMineNums)];
 }
+/**
+ *  初始化地图
+ */
 - (void)setupMapView {
     
     for (int i = 0; i < _row * _column; i++) {
@@ -288,6 +308,9 @@
         }
     }
 }
+/**
+ *  找到所有可翻转的单元
+ */
 - (void)findAllTurnover:(NSInteger)location {
     
     if ([self.mineMapArray[location] integerValue] != 0) {//如果当前单元不是空白单元则，回到上一层继续寻找下一个位置
@@ -319,17 +342,17 @@
     }
     
     aroundLocation = location + _column + 1;//右下
-    if (location % _column != _column - 1 && location / _column != _column - 1) {
+    if (location % _column != _column - 1 && location / _column != _row - 1) {
         [self addTurnover:aroundLocation];
     }
     
     aroundLocation = location + _column;//下
-    if (location / _column != _column - 1) {
+    if (location / _column != _row - 1) {
         [self addTurnover:aroundLocation];
     }
     
     aroundLocation = location + _column - 1;//左下
-    if (location / _column != _column - 1 && location % _column != 0) {
+    if (location / _column != _row - 1 && location % _column != 0) {
         [self addTurnover:aroundLocation];
     }
     
@@ -348,10 +371,12 @@
     [self findAllTurnover:location];
 }
 
+#pragma mark - button Click
 - (IBAction)restartBtnClick:(id)sender {
     [self.timer invalidate];//结束计时
     _restartBtn.enabled = NO;
     _startBtn.enabled = YES;
+    
     
     
     _leftMarkMineNums = _mineNums;
@@ -377,6 +402,24 @@
     _restartBtn.enabled = YES;
     
 }
+- (IBAction)gameLevelBtnClick:(UIButton *)sender {
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"难度选择" message:nil preferredStyle:UIAlertControllerStyleActionSheet];
+   
+    for (LevelModel *level in self.levelArray) {
+        UIAlertAction *levelAction = [UIAlertAction actionWithTitle:level.title style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            _mineNums = level.mineNums;
+            _row = level.row;
+            _column = level.column;
+            [self restartBtnClick:nil];
+        }];
+        [alert addAction:levelAction];
+    }
+    UIAlertAction *cancel = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+    }];
+    [alert addAction:cancel];
+    [self presentViewController:alert animated:YES completion:nil];
+}
+
 - (void)clockTimer {
     _seconds++;
     self.timeLb.text = [NSString stringWithFormat:@"%02ld:%02ld", _seconds / 60, _seconds % 60];

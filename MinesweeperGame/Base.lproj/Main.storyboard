@@ -22,76 +22,92 @@
                                 <rect key="frame" x="0.0" y="20" width="414" height="60"/>
                                 <subviews>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="00:00" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Fqx-OC-vi9">
-                                        <rect key="frame" x="56" y="19" width="55" height="21"/>
+                                        <rect key="frame" x="50" y="19" width="42" height="21"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="21" id="50L-QA-CRR"/>
-                                            <constraint firstAttribute="width" constant="55" id="PUw-tc-0qH"/>
+                                            <constraint firstAttribute="width" constant="42" id="PUw-tc-0qH"/>
                                         </constraints>
-                                        <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                        <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                         <color key="textColor" red="0.94509803920000002" green="0.1450980392" blue="0.19215686269999999" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="clock" translatesAutoresizingMaskIntoConstraints="NO" id="6n3-2Z-1UQ">
-                                        <rect key="frame" x="8" y="10" width="40" height="40"/>
+                                        <rect key="frame" x="5" y="10" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="40" id="DC3-zS-Q95"/>
                                             <constraint firstAttribute="height" constant="40" id="Vjt-hs-thL"/>
                                         </constraints>
                                     </imageView>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6jP-8H-8W3">
-                                        <rect key="frame" x="119" y="15" width="80" height="30"/>
+                                        <rect key="frame" x="97" y="15" width="60" height="30"/>
                                         <constraints>
-                                            <constraint firstAttribute="width" constant="80" id="2Xt-kF-6B0"/>
+                                            <constraint firstAttribute="width" constant="60" id="2Xt-kF-6B0"/>
                                             <constraint firstAttribute="height" constant="30" id="sUr-75-Vln"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="开始游戏"/>
                                         <connections>
                                             <action selector="startBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="8xI-rZ-nbj"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="8uH-Cr-R6o" userLabel="restart">
-                                        <rect key="frame" x="207" y="15" width="80" height="30"/>
+                                        <rect key="frame" x="162" y="15" width="60" height="30"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="30" id="2dM-ko-wlj"/>
-                                            <constraint firstAttribute="width" constant="80" id="MW0-LJ-87c"/>
+                                            <constraint firstAttribute="width" constant="60" id="MW0-LJ-87c"/>
                                         </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                         <state key="normal" title="再来一局"/>
                                         <connections>
                                             <action selector="restartBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="UHW-Rq-Udw"/>
                                         </connections>
                                     </button>
                                     <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="flag_clear_bg" translatesAutoresizingMaskIntoConstraints="NO" id="gwM-pN-cOC">
-                                        <rect key="frame" x="366" y="10" width="40" height="40"/>
+                                        <rect key="frame" x="369" y="10" width="40" height="40"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="40" id="Ema-Qc-zW1"/>
                                             <constraint firstAttribute="width" constant="40" id="pcV-xD-3OV"/>
                                         </constraints>
                                     </imageView>
                                     <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="10" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="VRk-ti-uFL">
-                                        <rect key="frame" x="379" y="29" width="27" height="18"/>
+                                        <rect key="frame" x="382" y="29" width="27" height="18"/>
                                         <constraints>
                                             <constraint firstAttribute="width" constant="27" id="ALB-57-7Xm"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="15"/>
-                                        <color key="textColor" cocoaTouchSystemColor="darkTextColor"/>
+                                        <color key="textColor" red="0.0" green="0.0" blue="0.0" alpha="1" colorSpace="calibratedRGB"/>
                                         <nil key="highlightedColor"/>
                                     </label>
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="aBo-Uf-OVk">
+                                        <rect key="frame" x="227" y="15" width="60" height="30"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="30" id="EfT-Q9-F3X"/>
+                                            <constraint firstAttribute="width" constant="60" id="cTR-iY-C1t"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                        <state key="normal" title="难度选择"/>
+                                        <connections>
+                                            <action selector="gameLevelBtnClick:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TfN-Xc-IJO"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                                 <constraints>
                                     <constraint firstItem="gwM-pN-cOC" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="446-Db-g1q"/>
-                                    <constraint firstAttribute="trailing" secondItem="gwM-pN-cOC" secondAttribute="trailing" constant="8" id="Dgz-nc-HHe"/>
+                                    <constraint firstAttribute="trailing" secondItem="gwM-pN-cOC" secondAttribute="trailing" constant="5" id="Dgz-nc-HHe"/>
                                     <constraint firstItem="Fqx-OC-vi9" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="Lc6-zA-VUv"/>
                                     <constraint firstItem="VRk-ti-uFL" firstAttribute="trailing" secondItem="gwM-pN-cOC" secondAttribute="trailing" id="RN6-57-ZiG"/>
-                                    <constraint firstItem="8uH-Cr-R6o" firstAttribute="leading" secondItem="6jP-8H-8W3" secondAttribute="trailing" constant="8" id="Sth-p3-zRP"/>
+                                    <constraint firstItem="8uH-Cr-R6o" firstAttribute="leading" secondItem="6jP-8H-8W3" secondAttribute="trailing" constant="5" id="Sth-p3-zRP"/>
                                     <constraint firstItem="6n3-2Z-1UQ" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="VFJ-8V-DUR"/>
-                                    <constraint firstItem="Fqx-OC-vi9" firstAttribute="leading" secondItem="6n3-2Z-1UQ" secondAttribute="trailing" constant="8" id="eoW-aw-fks"/>
+                                    <constraint firstItem="aBo-Uf-OVk" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="Vqo-ua-eWb"/>
+                                    <constraint firstItem="Fqx-OC-vi9" firstAttribute="leading" secondItem="6n3-2Z-1UQ" secondAttribute="trailing" constant="5" id="eoW-aw-fks"/>
+                                    <constraint firstItem="aBo-Uf-OVk" firstAttribute="leading" secondItem="8uH-Cr-R6o" secondAttribute="trailing" constant="5" id="h3f-od-0uW"/>
                                     <constraint firstItem="8uH-Cr-R6o" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="kor-Nv-fK2"/>
-                                    <constraint firstItem="6jP-8H-8W3" firstAttribute="leading" secondItem="Fqx-OC-vi9" secondAttribute="trailing" constant="8" id="pIA-hb-2rb"/>
+                                    <constraint firstItem="6jP-8H-8W3" firstAttribute="leading" secondItem="Fqx-OC-vi9" secondAttribute="trailing" constant="5" id="pIA-hb-2rb"/>
                                     <constraint firstAttribute="height" constant="60" id="qXA-GP-2yB"/>
                                     <constraint firstItem="6jP-8H-8W3" firstAttribute="centerY" secondItem="nmJ-c0-x5j" secondAttribute="centerY" id="s4X-Cb-G1f"/>
                                     <constraint firstItem="VRk-ti-uFL" firstAttribute="bottom" secondItem="gwM-pN-cOC" secondAttribute="bottom" constant="-3" id="wNR-Iu-d7b"/>
-                                    <constraint firstItem="6n3-2Z-1UQ" firstAttribute="leading" secondItem="nmJ-c0-x5j" secondAttribute="leading" constant="8" id="xCe-oe-Vzg"/>
+                                    <constraint firstItem="6n3-2Z-1UQ" firstAttribute="leading" secondItem="nmJ-c0-x5j" secondAttribute="leading" constant="5" id="xCe-oe-Vzg"/>
                                 </constraints>
                             </view>
                         </subviews>
@@ -112,7 +128,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="326" y="62"/>
+            <point key="canvasLocation" x="359" y="62"/>
         </scene>
     </scenes>
     <resources>

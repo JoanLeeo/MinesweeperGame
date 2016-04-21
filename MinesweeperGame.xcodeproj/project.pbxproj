@@ -15,6 +15,7 @@
 		85BD256D1CC0C7F900F3BA5A /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 85BD256B1CC0C7F900F3BA5A /* LaunchScreen.storyboard */; };
 		85BD25781CC0C7F900F3BA5A /* MinesweeperGameTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BD25771CC0C7F900F3BA5A /* MinesweeperGameTests.m */; };
 		85BD25831CC0C7F900F3BA5A /* MinesweeperGameUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 85BD25821CC0C7F900F3BA5A /* MinesweeperGameUITests.m */; };
+		85CAC1941CC875F400D77367 /* LevelModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 85CAC1931CC875F400D77367 /* LevelModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -51,6 +52,8 @@
 		85BD257E1CC0C7F900F3BA5A /* MinesweeperGameUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = MinesweeperGameUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		85BD25821CC0C7F900F3BA5A /* MinesweeperGameUITests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MinesweeperGameUITests.m; sourceTree = "<group>"; };
 		85BD25841CC0C7F900F3BA5A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
+		85CAC1921CC875F400D77367 /* LevelModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LevelModel.h; sourceTree = "<group>"; };
+		85CAC1931CC875F400D77367 /* LevelModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LevelModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -105,6 +108,8 @@
 				85BD25611CC0C7F800F3BA5A /* AppDelegate.m */,
 				85BD25631CC0C7F900F3BA5A /* ViewController.h */,
 				85BD25641CC0C7F900F3BA5A /* ViewController.m */,
+				85CAC1921CC875F400D77367 /* LevelModel.h */,
+				85CAC1931CC875F400D77367 /* LevelModel.m */,
 				85BD25661CC0C7F900F3BA5A /* Main.storyboard */,
 				85BD25691CC0C7F900F3BA5A /* Assets.xcassets */,
 				85BD256B1CC0C7F900F3BA5A /* LaunchScreen.storyboard */,
@@ -271,6 +276,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				85CAC1941CC875F400D77367 /* LevelModel.m in Sources */,
 				85BD25651CC0C7F900F3BA5A /* ViewController.m in Sources */,
 				85BD25621CC0C7F800F3BA5A /* AppDelegate.m in Sources */,
 				85BD255F1CC0C7F800F3BA5A /* main.m in Sources */,
