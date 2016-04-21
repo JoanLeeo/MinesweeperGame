@@ -83,7 +83,7 @@
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
-    _mineNums = 2;
+    _mineNums = 15;
     _leftMarkMineNums = _mineNums;
     _rightMarkMineNums = 0;
     _row = 10;
@@ -313,10 +313,10 @@
  */
 - (void)findAllTurnover:(NSInteger)location {
     
+    if (![self.turnoverArray containsObject:@(location)]) {//如果turnoverArray不包含这个单元，存进去
+        [self.turnoverArray addObject:@(location)];
+    }
     if ([self.mineMapArray[location] integerValue] != 0) {//如果当前单元不是空白单元则，回到上一层继续寻找下一个位置
-        if (![self.turnoverArray containsObject:@(location)]) {
-            [self.turnoverArray addObject:@(location)];
-        }
         return;
     }
     
